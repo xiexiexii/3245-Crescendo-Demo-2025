@@ -11,9 +11,12 @@ import frc.robot.commands.InShooterCommand;
 import frc.robot.commands.IndexToShootCommand;
 import frc.robot.commands.IntakeIndexUntilTrippedCommand;
 import frc.robot.commands.RumbleForSecsCommand;
+import frc.robot.commands.SetChaseCommand;
 import frc.robot.commands.SetShoulderCommand;
+import frc.robot.commands.SetShoulderTagChaseCommand;
 import frc.robot.commands.SpinUpAutoCommand;
 import frc.robot.commands.SpinUpShootCommand;
+import frc.robot.commands.TagChaseCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -66,6 +69,14 @@ public class RobotContainer {
     new AutoIntakeIndexUntilTrippedCommand(m_intakeSubsystem, m_indexerSubsystem),
     new AutoInShooterCommand(m_intakeSubsystem, m_indexerSubsystem)
   );
+
+  public SequentialCommandGroup tagChaseCommand() {
+    return new SequentialCommandGroup(
+      new SetShoulderTagChaseCommand(m_shoulderSubsystem),
+      new SetChaseCommand("chase"),
+      new TagChaseCommand(m_robotDrive)
+    );
+  }
 
 
   public RobotContainer() {
@@ -163,14 +174,25 @@ public class RobotContainer {
         .whileTrue(new AimAtSpeakerCommand(m_robotDrive, m_driverController.getHID()));*/
 
     //shoulder presets
-    new JoystickButton(m_driverController.getHID(), ControllerConstants.shoulderHomeButton).whileTrue(
-      new SetShoulderCommand(m_shoulderSubsystem, "home"));
+    new JoystickButton(m_driverController.getHID(), ControllerConstants.shoulderHomeButton)
+    .whileTrue(
+      new SetShoulderCommand(m_shoulderSubsystem, "home")
+    );
 
-    new JoystickButton(m_driverController.getHID(), ControllerConstants.shoulderAmpButton).whileTrue(
-      new SetShoulderCommand(m_shoulderSubsystem, "amp"));
+    new JoystickButton(m_driverController.getHID(), ControllerConstants.shoulderAmpButton)
+    .whileTrue(
+      new SetShoulderCommand(m_shoulderSubsystem, "amp")
+    );
 
-    new JoystickButton(m_driverController.getHID(), ControllerConstants.shoulderProtButton).whileTrue(
-      new SetShoulderCommand(m_shoulderSubsystem, "protected"));
+    new JoystickButton(m_driverController.getHID(), ControllerConstants.shoulderProtButton)
+    .whileTrue(
+      new SetShoulderCommand(m_shoulderSubsystem, "protected")
+    );
+
+    new JoystickButton(m_driverController.getHID(), ControllerConstants.tagChaseButton)
+    .onTrue(
+      tagChaseCommand()
+    );
 
     /*new JoystickButton(m_driverController.getHID(), ControllerConstants.kVisionTurnButton).whileTrue(
       new AdjustAngleToDistanceCommand(m_shoulderSubsystem));
@@ -204,9 +226,14 @@ public class RobotContainer {
           new InstantCommand(() -> m_intakeSubsystem.stop(), m_intakeSubsystem)
       ));
 
-      new JoystickButton(m_driverController.getHID(), ControllerConstants.shoulderHomeButton)
+      new JoystickButton(m_driverController.getHID(), ControllerConstants.startButton)
       .onTrue(
         new InstantCommand(() -> m_robotDrive.zeroGyro(), m_robotDrive)
+      );
+
+      new JoystickButton(m_driverController.getHID(), ControllerConstants.backButton)
+      .onTrue(
+        new SetChaseCommand("stop")
       );
 
   }

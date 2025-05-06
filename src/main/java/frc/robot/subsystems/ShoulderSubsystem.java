@@ -76,6 +76,12 @@ public class ShoulderSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Shoulder At Amp Height", false);
   }
 
+  public void setTagChase() {
+    shoulderMaster.setControl(new PositionVoltage(PositionValueConstants.k_shoulderTagChasePos.in(Units.Rotations)));
+    SmartDashboard.putBoolean("Shoulder At Amp Height", false);
+  }
+
+
   /*
   public void setDistShot() {
     shoulderMaster.setControl(positionDutyCycle.withPosition(

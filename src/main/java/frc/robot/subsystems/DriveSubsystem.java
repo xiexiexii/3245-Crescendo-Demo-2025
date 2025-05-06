@@ -21,11 +21,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.VisionConstants;
 
 // Drive Subsystem Class yay
 public class DriveSubsystem extends SubsystemBase {
@@ -141,6 +143,15 @@ public class DriveSubsystem extends SubsystemBase {
       // Puts Yaw + Angle on Smart Dashboard
       SmartDashboard.putNumber("NavX Yaw", -m_gyro.getYaw());
       SmartDashboard.putNumber("NavX Angle", -m_gyro.getAngle());
+
+      SmartDashboard.putBoolean("Vision/isChasing", VisionConstants.k_isChasing);
+      // NetworkTableInstance.getDefault().getTable(VisionConstants.k_limelightName).getEntry("tv").getDouble(0) == 1
+      SmartDashboard.putBoolean("Vision/TIV", NetworkTableInstance.getDefault().getTable(VisionConstants.k_limelightName).getEntry("tv").getDouble(0) == 1);
+
+    SmartDashboard.putNumber("Strafe", NetworkTableInstance.getDefault().getTable(VisionConstants.k_limelightName).getEntry("robotpose_targetspace").getDoubleArray(new double[6])[0]);
+    SmartDashboard.putNumber("Range", NetworkTableInstance.getDefault().getTable(VisionConstants.k_limelightName).getEntry("robotpose_targetspace").getDoubleArray(new double[6])[2]);
+    SmartDashboard.putNumber("Aim", NetworkTableInstance.getDefault().getTable(VisionConstants.k_limelightName).getEntry("robotpose_targetspace").getDoubleArray(new double[6])[4]);
+
   }
 
   // Returns currently estimated pose of robot

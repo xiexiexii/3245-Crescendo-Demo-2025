@@ -57,11 +57,13 @@ public final class Constants {
     public static final int shoulderHomeButton = 2; //B
     public static final int shoulderAmpButton = 1; //A
     public static final int shoulderProtButton = 3; //X
+    public static final int tagChaseButton = 4; // Y
 
     public static final int bumpUpButton = 1; //A
     public static final int bumpDownButton = 2; //B
 
     public static final int startButton = Button.kStart.value;
+    public static final int backButton = Button.kBack.value;
   }
 
   public static class PIDConstants {
@@ -254,6 +256,7 @@ public final class Constants {
   public static class PositionValueConstants {
     public static final Angle k_shoulderHomePos = Units.Rotations.of(0);
     public static final Angle k_shoulderAmpShotPos = Units.Rotations.of(0.65);
+    public static final Angle k_shoulderTagChasePos = Units.Rotations.of(0.54);
     public static final Angle k_shoulderProtShotPos = Units.Rotations.of(0.2);
 
     public static final double shoulderHomePos = 0;
@@ -282,5 +285,43 @@ public final class Constants {
   }
 
   public static final class VisionConstants {
+
+    public static final String k_limelightName = "limelight-two";
+
+    // PID for Tag Relative Control for Scoring
+    public static final double kP_aim = 0.05;
+    public static final double kI_aim = 0.000;
+    public static final double kD_aim = 0.000;
+
+    public static final double kP_range = 0.05;
+    public static final double kI_range = 0.0;
+    public static final double kD_range = 0.0;
+
+    public static final double kP_strafe = 0.35;
+    public static final double kI_strafe = 0.0;
+    public static final double kD_strafe = 0.0;
+
+    // AimNRange Retro Target
+    public static final double k_aimRetroTarget = 0;
+    public static final double k_rangeRetroTarget = 0;
+    public static final double k_strafeRetroTarget = 0;
+
+    // Thresholds
+    public static final double k_rangeThreshold = 0.02;
+    public static final double k_strafeThreshold = 0.02;
+    public static final double k_aimThreshold = 0.5;
+
+    // Prerequisites
+    public static final double k_tzValidRange = -2.0;
+    public static final double k_yawValidRange = 35;
+
+    // For testing
+    public static boolean k_positioning = false;
+
+    // Boolean for Committing to Shoot
+    public static boolean k_positioned = true;
+
+    // Boolean for Tag Chasing
+    public static boolean k_isChasing = false;
   }
 }
